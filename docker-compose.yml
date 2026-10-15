@@ -1,0 +1,22 @@
+# 本机练习库：宿主机 5433 → 容器 5432（避开 vela 等占用的 5432）
+services:
+  postgres:
+    image: postgres:16
+    container_name: springboot-hello-postgres
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5433:5432"
+    environment:
+      POSTGRES_DB: springboot_hello
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: hello_local_only
+    volumes:
+      - springboot_hello_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d springboot_hello"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  springboot_hello_pgdata:

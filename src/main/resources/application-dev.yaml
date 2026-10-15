@@ -1,3 +1,5 @@
+# 本地默认连 Docker Postgres（端口 5433，见 docker-compose.yml）
+# 启动前：docker compose up -d
 spring:
   devtools:
     restart:
@@ -5,14 +7,13 @@ spring:
     livereload:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: ${DB_URL:jdbc:postgresql://127.0.0.1:5433/springboot_hello}
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
+    username: ${DB_USERNAME:app_user}
+    password: ${DB_PASSWORD:hello_local_only}
   h2:
     console:
-      enabled: true
-      path: /h2-console
+      enabled: false
   jpa:
     hibernate:
       ddl-auto: update
