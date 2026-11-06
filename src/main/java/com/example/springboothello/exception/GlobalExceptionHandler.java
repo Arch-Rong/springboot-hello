@@ -33,6 +33,15 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
+	 * 处理「登录失败」。
+	 * AuthController 在用户名不存在或密码不对时抛 UnauthorizedException，这里转成 HTTP 401。
+	 */
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<Map<String, Object>> handleUnauthorized(UnauthorizedException ex) {
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody(401, ex.getMessage()));
+	}
+
+	/**
 	 * 处理「请求参数没填对」。
 	 * UserController 的 @Valid @RequestBody User 校验失败时，Spring 会抛出 MethodArgumentNotValidException。
 	 * 这里把每个字段的错误收集到 fields 里，例如 { "name": "姓名不能为空" }，HTTP 状态码是 400。

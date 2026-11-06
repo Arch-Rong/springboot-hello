@@ -6,3 +6,9 @@ spring:
 
 server:
   port: ${SERVER_PORT:8080}
+
+# JWT 配置：签发和校验 token 时用。密钥至少 32 个字符，HS256 才能用。
+app:
+  jwt:
+    secret: ${JWT_SECRET:please-change-this-demo-secret-key-32b}
+    expire-hours: 2
